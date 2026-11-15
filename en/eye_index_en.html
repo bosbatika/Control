@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="EYE programming language documentation: syntax, data types, methods, compilation, networking module, UDS, and fault tolerance.">
+<title>EYE — Detailed Language Documentation</title>
+<style>
+:root{--bg:#0b1020;--panel:#111a2e;--panel2:#17233b;--line:#273651;--text:#e8eef9;--muted:#a7b5cc;--accent:#79e0c3;--accent2:#8eb7ff;--code:#080d18;--warn:#f4c76b;--good:#8de0b2;--shadow:0 16px 42px rgba(0,0,0,.24)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:86px}body{margin:0;background:radial-gradient(1000px 600px at 80% -10%,rgba(75,122,185,.17),transparent 60%),var(--bg);color:var(--text);font:15px/1.7 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--accent2);text-decoration:none}a:hover{color:var(--accent);text-decoration:underline}.shell{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;padding:26px 18px 30px;border-right:1px solid var(--line);background:rgba(9,15,29,.88);backdrop-filter:blur(12px)}.brand{display:flex;align-items:center;gap:12px;margin:0 8px 26px}.brand-mark{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,#7ae2c5,#79aaff);color:#071321;display:grid;place-items:center;font-weight:900;font-size:18px;box-shadow:0 8px 24px rgba(121,224,195,.2)}.brand strong{display:block;letter-spacing:.12em;font-size:18px}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:.04em}.nav-label{margin:22px 10px 8px;color:#7486a5;text-transform:uppercase;font-size:10px;font-weight:800;letter-spacing:.16em}.nav a{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:9px;color:#bac7dc;font-size:13px;margin:2px 0}.nav a:hover,.nav a.active{background:#17243b;color:var(--accent);text-decoration:none}.nav .num{width:20px;color:#6e82a4;font-size:10px;font-weight:800}.sidebar-note{margin:26px 8px 0;padding:13px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:11px}.main{min-width:0}.topbar{height:62px;position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,58px);border-bottom:1px solid rgba(39,54,81,.75);background:rgba(11,16,32,.84);backdrop-filter:blur(14px)}.crumb{color:var(--muted);font-size:12px}.version{border:1px solid var(--line);padding:5px 10px;border-radius:999px;color:#b9c8de;font-size:11px}.content{max-width:1120px;margin:0 auto;padding:44px clamp(18px,4vw,58px) 90px}.hero{padding:32px 34px;border:1px solid #2b4560;border-radius:22px;background:linear-gradient(120deg,rgba(121,224,195,.12),rgba(142,183,255,.09) 60%,rgba(37,55,88,.3));box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"EYE";position:absolute;right:30px;bottom:-32px;font-size:130px;line-height:1;font-weight:950;letter-spacing:-.08em;color:rgba(205,226,255,.045);pointer-events:none}.eyebrow{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.17em;font-weight:800}.hero h1{font-size:clamp(34px,5vw,56px);line-height:1.04;letter-spacing:-.045em;margin:13px 0 15px}.hero p{max-width:700px;color:#c1cee0;font-size:16px;margin:0}.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.tag{border:1px solid rgba(144,184,221,.25);border-radius:999px;padding:5px 10px;color:#c9d8e9;font-size:11px;background:rgba(9,17,31,.35)}section{margin-top:56px}.section-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px}.section-num{flex:0 0 34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(121,224,195,.12);color:var(--accent);font-size:12px;font-weight:900}.section-head h2{font-size:25px;letter-spacing:-.025em;line-height:1.2;margin:2px 0 7px}.section-head p{margin:0;color:var(--muted);max-width:780px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.card{background:linear-gradient(180deg,rgba(23,35,59,.92),rgba(17,26,46,.94));border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 8px 24px rgba(0,0,0,.12)}.card h3{margin:0 0 7px;font-size:15px}.card p{margin:0;color:var(--muted);font-size:13px}.callout{padding:15px 17px;border-left:3px solid var(--accent);background:rgba(121,224,195,.07);border-radius:0 11px 11px 0;color:#cfdae9;margin:18px 0}.callout.warn{border-left-color:var(--warn);background:rgba(244,199,107,.07)}.code-wrap{margin:16px 0 22px;border:1px solid #2a3953;border-radius:14px;overflow:hidden;background:var(--code);box-shadow:var(--shadow)}.code-top{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:#111a2b;border-bottom:1px solid #26344d;color:#94a8c5;font-size:11px}.copy{border:1px solid #344663;background:#17243a;color:#cbd8e8;padding:4px 9px;border-radius:7px;font-size:11px;cursor:pointer}.copy:hover{color:var(--accent);border-color:var(--accent)}pre{margin:0;padding:17px 19px;overflow:auto;color:#d9e6f8;font:12.5px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:4}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#a9e6d2}.inline{background:#17243a;border:1px solid #2a3b56;padding:1px 5px;border-radius:5px;font-size:.92em}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px;margin:16px 0}.table{width:100%;border-collapse:collapse;min-width:520px;background:rgba(16,25,43,.7)}.table th,.table td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}.table th{background:#17243a;color:#bcd0e8;font-size:11px;text-transform:uppercase;letter-spacing:.08em}.table tr:last-child td{border-bottom:0}.table td:first-child{color:var(--accent);font-weight:700;white-space:nowrap}.muted{color:var(--muted)}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}.flow-step{position:relative;text-align:center;border:1px solid var(--line);border-radius:12px;padding:13px 8px;background:#121d32;font-size:12px;color:#d3deef}.flow-step b{display:block;color:var(--accent);margin-bottom:5px}.flow-step:not(:last-child):after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:#7c94b6;font-size:17px;z-index:2}.footer{margin-top:65px;padding-top:22px;border-top:1px solid var(--line);color:#7f91ad;font-size:11px}.pill{display:inline-block;padding:3px 8px;border-radius:999px;background:rgba(141,224,178,.12);color:var(--good);font-size:10px;font-weight:800;letter-spacing:.06em}.mini-title{color:#8094b1;text-transform:uppercase;font-size:10px;letter-spacing:.12em;font-weight:800;margin:0 0 7px}.kbd{border:1px solid #3b4d69;border-bottom-width:2px;padding:1px 6px;border-radius:5px;font-size:11px;color:#d6e2f2}.toc-search{width:100%;margin:12px 0 8px;padding:9px 11px;background:#111a2c;border:1px solid #2b3a54;border-radius:9px;color:var(--text);outline:none}.toc-search:focus{border-color:var(--accent)}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:15px}.brand{margin-bottom:12px}.nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px}.nav-label,.sidebar-note{display:none}.toc-search{max-width:420px}.topbar{position:relative}.content{padding-top:28px}.flow{grid-template-columns:1fr}.flow-step:not(:last-child):after{content:"↓";right:50%;top:auto;bottom:-17px;transform:translateX(50%)} }
+@media(max-width:650px){.grid,.two{grid-template-columns:1fr}.hero{padding:24px 20px}.hero:after{font-size:85px;right:12px}.section-head h2{font-size:22px}.nav{grid-template-columns:1fr 1fr}.nav a{font-size:12px;padding:7px}.content{padding-left:15px;padding-right:15px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">E</div><div><strong>EYE</strong><small>programming language</small></div></div>
+  <input class="toc-search" id="navSearch" placeholder="Search sections…" aria-label="Search sections">
+  <div class="nav-label">Guide</div>
+  <nav class="nav" id="nav">
+    <a href="#intro"><span class="num">01</span>Overview</a>
+    <a href="#quick"><span class="num">02</span>First Example</a>
+    <a href="#syntax"><span class="num">03</span>Syntax</a>
+    <a href="#types"><span class="num">04</span>Data Types</a>
+    <a href="#methods"><span class="num">05</span>Methods and `^`</a>
+    <a href="#imports"><span class="num">06</span>Imports and C Functions</a>
+    <a href="#net"><span class="num">07</span>Networking Module</a>
+    <a href="#bridge"><span class="num">08</span>Language Interoperability</a>
+    <a href="#resilience"><span class="num">09</span>Fault Tolerance</a>
+    <a href="#build"><span class="num">10</span>Build and Run</a>
+    <a href="#limits"><span class="num">11</span>Current Limitations</a>
+  </nav>
+  <div class="sidebar-note">This documentation is based on the provided core and the EYE author's description. Some details depend on the compiler version.</div>
+</aside>
+<main class="main">
+  <div class="topbar"><div class="crumb">Documentation <span class="muted">/</span> Language and Runtime</div><div class="version">Detailed Guide · API Reference</div></div>
+  <div class="content">
+    <header class="hero">
+      <div class="eyebrow">Language · Compiler · Runtime</div>
+      <h1>EYE</h1>
+      <p>A language with its own syntax and data types, compilation of core logic to C, and the ability to connect additional languages and networking components through runtime bridges.</p>
+      <div class="hero-tags"><span class="tag">C backend</span><span class="tag">Go / net</span><span class="tag">UDS bridge</span><span class="tag">Type methods</span><span class="tag">Restartable parts</span></div>
+    </header>
+
+    <section id="intro">
+      <div class="section-head"><div class="section-num">01</div><div><h2>What Is EYE</h2><p>EYE is designed as a language and runtime environment that can combine multiple languages and components in a single application.</p></div></div>
+      <div class="grid">
+        <article class="card"><h3>Custom Syntax</h3><p>Declarations use <code>.Start</code>, methods use dot notation, programs end with <code>end</code>, and types can be abbreviated using <code>^</code>.</p></article>
+        <article class="card"><h3>Types with Their Own Methods</h3><p>A data type contains a <code>value</code> field and a set of methods intended for that type. The compiler binds available method pointers when a variable is created.</p></article>
+        <article class="card"><h3>Multi-language Architecture</h3><p>The core logic is generated in C. The built-in module <code>net</code> adds a Go component and a message bridge.</p></article>
+        <article class="card"><h3>IPC via UDS</h3><p>Go and the compiler's bridge component exchange messages through a Unix Domain Socket. The C component communicates through standard streams.</p></article>
+        <article class="card"><h3>Component Recovery</h3><p>According to the EYE design, individual application components can be restarted after a failure without necessarily restarting the entire application.</p></article>
+        <article class="card"><h3>Extensibility</h3><p>Other languages can be connected to the compiler through additional generators and message adapters.</p></article>
+      </div>
+      <div class="callout">EYE is an evolving project. This page describes the syntax and mechanisms visible in the provided core, as well as architectural capabilities stated by the author.</div>
+    </section>
+
+    <section id="quick">
+      <div class="section-head"><div class="section-num">02</div><div><h2>First Example</h2><p>A minimal program creates an integer, uses a type method, and prints the result.</p></div></div>
+      <div class="code-wrap"><div class="code-top"><span>hello.eye · EYE Example</span><button class="copy" data-copy="hello">Copy</button></div><pre id="hello"><code>import stop_import ;
+
+Int chislo.Start = 12 ;
+
+@ printf("Number: %d\n", chislo.value) ;
+@ printf("Even? %d\n", chislo.Chet(chislo)) ;
+
+end</code></pre></div>
+      <p class="muted">In the current implementation <code>Chet</code> returns <code>1</code>, if the number is even, and <code>0</code>, if it is odd.</p>
+    </section>
+
+    <section id="syntax">
+      <div class="section-head"><div class="section-num">03</div><div><h2>Syntax Basics</h2><p>EYE programs use familiar control structures, but have their own rules for declaring variables and calling external functions.</p></div></div>
+      <div class="two">
+        <div><div class="mini-title">Declaration</div><div class="code-wrap"><div class="code-top"><span>Variables</span><button class="copy" data-copy="decl">Copy</button></div><pre id="decl"><code>Int count.Start = 10 ;
+Float pi.Start = 3.14159 ;
+String title.Start = "EYE" ;
+Bool ready.Start = 1 ;</code></pre></div></div>
+        <div><div class="mini-title">Accessing a Value</div><div class="code-wrap"><div class="code-top"><span>The value Field</span><button class="copy" data-copy="value">Copy</button></div><pre id="value"><code>count.value = count.value + 1 ;
+@ printf("%d\n", count.value) ;</code></pre></div></div>
+      </div>
+      <h3>Declaration Without an Initial Value: <code>~</code></h3>
+      <p>If a variable does not need an initial value at declaration time, the <code>=</code> assignment is replaced by the marker <code>~</code>. This means: declare the variable without assigning an initial value on the declaration line.</p>
+      <div class="code-wrap"><div class="code-top"><span>Declaration Without an Explicit Initial Value</span><button class="copy" data-copy="tilde-decl">Copy</button></div><pre id="tilde-decl"><code>Int counter.Start ~ ;
+String buffer.Start ~ ;
+^ nextCounter.Start ~ ;</code></pre></div>
+      <p class="muted">Compare: <code>Int counter.Start = 0;</code> sets an explicit initial value, while <code>Int counter.Start ~;</code> declares the variable without such an assignment. After declaration, a value can be assigned through the field <code>.value</code>. Do not confuse this marker with the C bitwise NOT operator.</p>
+      <h3>Conditions and Loops</h3>
+      <div class="code-wrap"><div class="code-top"><span>if and for</span><button class="copy" data-copy="control">Copy</button></div><pre id="control"><code>Int number.Start = 7 ;
+
+if ( number.value > 0 ) {
+    @ printf("positive\n") ;
+} ;
+
+for ( int i = 0 ; i < 3 ; i = i + 1 ) {
+    @ printf("%d\n", i) ;
+} ;
+
+end</code></pre></div>
+      <p class="muted">The provided core recognizes the control structures <code>if</code>, <code>for</code> and <code>switch</code>. A syntax similar to C is used inside blocks.</p>
+      <h3>Calling C Functions</h3>
+      <p>A call with the prefix <code>@</code> is passed through to the generated C code. For example:</p>
+      <div class="code-wrap"><div class="code-top"><span>Calling a Standard Function</span><button class="copy" data-copy="printf">Copy</button></div><pre id="printf"><code>@ printf("Hello from EYE\n") ;
+@ scanf("%d", &amp;count.value) ;</code></pre></div>
+    </section>
+
+    <section id="types">
+      <div class="section-head"><div class="section-num">04</div><div><h2>Data Types</h2><p>EYE built-in types are represented as C structs. For most types, the primary content is stored in the field <code>value</code>; containers additionally have <code>Size</code>.</p></div></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>EYE Type</th><th>Purpose</th><th>Main Fields</th><th>Method Set</th></tr></thead><tbody>
+        <tr><td>Int</td><td>Integer</td><td><code>int value</code></td><td>Conversion, comparison, exponentiation, parity check, length</td></tr>
+        <tr><td>Float</td><td>Single-precision number</td><td><code>float value</code></td><td>Conversion to integer, string representation, comparison</td></tr>
+        <tr><td>Double</td><td>Double-precision number</td><td><code>double value</code></td><td>Conversion to integer, string representation, comparison</td></tr>
+        <tr><td>String</td><td>C string</td><td><code>char* value</code></td><td>Buffer allocation, conversion, letter case, substring search</td></tr>
+        <tr><td>Bool</td><td>Boolean value</td><td><code>_Bool value</code></td><td>No method pointers in the current core</td></tr>
+        <tr><td>File</td><td>File and its contents</td><td><code>char* value</code>, <code>char name[100]</code></td><td>Write, read, size, append</td></tr>
+        <tr><td>Byte</td><td>Byte buffer</td><td><code>Norm* value</code>, <code>int Size</code></td><td>Free, allocate, resize</td></tr>
+        <tr><td>Int_list</td><td>Array of integers</td><td><code>Int* value</code>, <code>int Size</code></td><td>Delete, allocate, resize, join into a string</td></tr>
+        <tr><td>Float_list</td><td>Array of Float values</td><td><code>Float* value</code>, <code>int Size</code></td><td>Delete, allocate, resize, join into a string</td></tr>
+        <tr><td>Double_list</td><td>Array of Double values</td><td><code>Double* value</code>, <code>int Size</code></td><td>Delete, allocate, resize, join into a string</td></tr>
+        <tr><td>String_list</td><td>Array of strings</td><td><code>String* value</code>, <code>int Size</code></td><td>Delete, allocate, resize, join into a string</td></tr>
+        <tr><td>Bool_list</td><td>Array of Boolean values</td><td><code>Bool* value</code>, <code>int Size</code></td><td>Delete, allocate, resize, join into a string</td></tr>
+        <tr><td>File_list</td><td>Array of files</td><td><code>File* value</code>, <code>int Size</code></td><td>Delete, allocate, resize, join names into a string</td></tr>
+      </tbody></table></div>
+      <div class="two">
+        <article class="card"><h3>The <code>.value</code></h3><p>For scalar types, it contains the value itself. For <code>String</code> and <code>File</code> it is a pointer to a character buffer; for lists, it is a pointer to an array of elements; for <code>Byte</code> it is a pointer to bytes.</p></article>
+        <article class="card"><h3>The <code>.Size</code> Field</h3><p>For <code>Byte</code> and <code>*_list</code> types, it stores the number of allocated/available elements according to allocation and resizing operations.</p></article>
+      </div>
+      <div class="callout warn"><strong>Internal type:</strong> the core C component defines the alias <code>Norm</code> as <code>unsigned char</code>. It is used for <code>Byte</code> elements, but there is no separate EYE type named <code>Norm</code> in the automatic method-binding table.</div>
+      <div class="callout">The method reference for each type follows. Names retain the spelling used in the core, including historical variants <code>Size_stirng</code>, <code>Uper</code>, <code>Redect</code> and <code>Nul_stirng</code>.</div>
+    </section>
+
+    <section id="methods">
+      <div class="section-head"><div class="section-num">05</div><div><h2>Methods and Type Abbreviations</h2><p>When an object is declared using <code>.Start</code> the core zero-initializes the struct and binds the available method pointers for that type. Methods are called through the variable: <code>object.Method(object, ...)</code> or by passing its address if the method signature expects a pointer.</p></div></div>
+      <div class="code-wrap"><div class="code-top"><span>Int Method Example</span><button class="copy" data-copy="methodex">Copy</button></div><pre id="methodex"><code>Int chislo.Start = 12 ;
+@ printf("Even? %d\n", chislo.Chet(chislo)) ;
+@ printf("Digits: %d\n", chislo.Int_length(chislo)) ;</code></pre></div>
+
+      <h3 id="api-int">Int — Integers</h3>
+      <p><code>Int</code> stores a C <code>int</code>. Methods can convert the number, compare it, raise it to an integer power, check parity, and count its digits.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Arguments After the Method Name</th><th>Result and Purpose</th></tr></thead><tbody>
+        <tr><td>Float_conv</td><td><code>(Int value)</code></td><td>Converts <code>value.value</code> to <code>float</code>. The internal implementation function is named <code>Int_to_float</code>.</td></tr>
+        <tr><td>Max_int</td><td><code>(Int value, int other)</code></td><td>Compares the number with <code>other</code>: returns <code>1</code>, if the current value is greater; <code>0</code>, if they are equal; <code>-1</code>, if it is smaller.</td></tr>
+        <tr><td>Int_to_string</td><td><code>(Int value, char buffer[50])</code></td><td>Writes the decimal representation of the number to the supplied buffer and returns a pointer to it. The buffer must be large enough for the string and its terminating null character.</td></tr>
+        <tr><td>Repeat_int</td><td><code>(Int value, int exp)</code></td><td>Returns the number multiplied by itself <code>exp</code> times: effectively <code>value.value</code> raised to the integer power <code>exp</code>. For <code>exp ≤ 0</code> the current implementation returns <code>1</code>.</td></tr>
+        <tr><td>Chet</td><td><code>(Int value)</code></td><td>Checks parity. Returns <code>1</code> for an even number and <code>0</code> for an odd number.</td></tr>
+        <tr><td>Int_length</td><td><code>(Int value)</code></td><td>Returns the number of digits in the decimal representation. For <code>0</code> returns <code>1</code>; the minus sign is not counted.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Using Int</span><button class="copy" data-copy="int-example">Copy</button></div><pre id="int-example"><code>Int number.Start = 125 ;
+@ printf("float = %f\n", number.Float_conv(number)) ;
+@ printf("compare = %d\n", number.Max_int(number, 100)) ;
+@ printf("even = %d\n", number.Chet(number)) ;
+@ printf("digits = %d\n", number.Int_length(number)) ;</code></pre></div>
+
+      <h3 id="api-float">Float — Single-precision Numbers</h3>
+      <p><code>Float</code> stores <code>float value</code>. Methods convert it to an integer or string and compare it with another value.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Arguments</th><th>Result and Purpose</th></tr></thead><tbody>
+        <tr><td>Conv_int_min</td><td><code>(Float value)</code></td><td>Converts Float to <code>int</code> using a standard C cast: the fractional part is discarded toward zero.</td></tr>
+        <tr><td>Conv_int_max</td><td><code>(Float value)</code></td><td>Returns the value rounded to the nearest integer using <code>roundf</code>.</td></tr>
+        <tr><td>Float_to_string</td><td><code>(Float value, char buffer[50])</code></td><td>Writes the value to the buffer using the format <code>%f</code> and returns a pointer to the buffer (typically six digits after the decimal point according to printf rules).</td></tr>
+        <tr><td>Max_float</td><td><code>(Float value, float other)</code></td><td>Comparison: <code>1</code> — greater, <code>0</code> — equal, <code>-1</code> — less.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Using Float</span><button class="copy" data-copy="float-example">Copy</button></div><pre id="float-example"><code>Float price.Start = 12.75 ;
+@ printf("truncated = %d\n", price.Conv_int_min(price)) ;
+@ printf("rounded = %d\n", price.Conv_int_max(price)) ;
+@ printf("compare = %d\n", price.Max_float(price, 10.0)) ;</code></pre></div>
+
+      <h3 id="api-double">Double — Double-precision Numbers</h3>
+      <p><code>Double</code> stores <code>double value</code>. Its method set is similar to <code>Float</code>, but operates on the double-precision type.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Arguments</th><th>Result and Purpose</th></tr></thead><tbody>
+        <tr><td>Conv_int_min</td><td><code>(Double value)</code></td><td>Converts the value to <code>int</code> discarding the fractional part toward zero.</td></tr>
+        <tr><td>Conv_int_max</td><td><code>(Double value)</code></td><td>Rounds the value to the nearest integer using <code>round</code>.</td></tr>
+        <tr><td>String_double</td><td><code>(Double value, char buffer[50])</code></td><td>Writes the decimal representation using <code>sprintf(..., "%f", ...)</code>. The internal implementation function is named <code>Double_to_string</code>.</td></tr>
+        <tr><td>Max_double</td><td><code>(Double value, double other)</code></td><td>Comparison: <code>1</code> — greater, <code>0</code> — equal, <code>-1</code> — less.</td></tr>
+      </tbody></table></div>
+
+      <h3 id="api-string">String — Strings</h3>
+      <p><code>String</code> contains <code>char* value</code>. This is a C string terminated by the character <code>\0</code>. Case-conversion and search methods operate directly on the string buffer.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Arguments</th><th>Result and Purpose</th></tr></thead><tbody>
+        <tr><td>Size_stirng</td><td><code>(String* value, int size)</code></td><td>Allocates a buffer of the specified size, copies the old contents (up to <code>size - 1</code> bytes) and appends a terminating <code>\0</code>. The spelling <code>Size_stirng</code> is the exact API field name; the implementation is named <code>Size_string</code>.</td></tr>
+        <tr><td>String_to_int</td><td><code>(String value)</code></td><td>Converts the beginning of the string to <code>int</code> using the C function <code>atoi</code>.</td></tr>
+        <tr><td>String_to_float</td><td><code>(String value)</code></td><td>Converts the beginning of the string to <code>float</code> using <code>atof</code>.</td></tr>
+        <tr><td>Lower</td><td><code>(String* value)</code></td><td>Converts Latin letters in the string to lowercase. Modifies the buffer itself.</td></tr>
+        <tr><td>Uper</td><td><code>(String* value)</code></td><td>Converts Latin letters in the string to uppercase. The field is named <code>Uper</code>, while the bound C function is <code>Upper</code>.</td></tr>
+        <tr><td>Contains</td><td><code>(String value, char* substring)</code></td><td>Searches for a substring using <code>strstr</code>: returns <code>1</code>, if found, and <code>0</code>, if not found.</td></tr>
+        <tr><td>Repeat_string</td><td><code>(String value, int count)</code></td><td>The function pointer field exists in the <code>String</code> struct, but the method is not connected in the checked binding table or core implementation. Do not call it until an implementation is added.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Using String</span><button class="copy" data-copy="string-example">Copy</button></div><pre id="string-example"><code>String title.Start = malloc(128) ;
+strcpy(title.value, "Eye Language") ;
+@ title.Lower(&amp;title) ;
+@ printf("%s\n", title.value) ;
+@ printf("contains = %d\n", title.Contains(title, "eye")) ;
+@ printf("as int = %d\n", title.String_to_int(title)) ;</code></pre></div>
+      <div class="callout warn">For <code>Size_stirng</code>, <code>Lower</code>, and <code>Uper</code>, the signature accepts a pointer to <code>String</code>, so a direct call to the C function must pass the object address: <code>&amp;title</code>. For conversions and <code>Contains</code>, pass the struct itself.</div>
+
+      <h3 id="api-bool">Bool — Boolean Values</h3>
+      <p><code>Bool</code> contains only the field <code>_Bool value</code>. In the provided core implementation, scalar <code>Bool</code> has no declared method pointers or automatic method bindings. Use the value directly in conditions.</p>
+      <div class="code-wrap"><div class="code-top"><span>Using Bool</span><button class="copy" data-copy="bool-example">Copy</button></div><pre id="bool-example"><code>Bool ready.Start = 1 ;
+if ( ready.value ) {
+    @ printf("ready\n") ;
+} ;</code></pre></div>
+
+      <h3 id="api-file">File — File Operations</h3>
+      <p><code>File</code> contains a pointer <code>value</code> to the file contents and an array <code>name[100]</code> containing the file name/path. File methods accept <code>File*</code>, that is, the address of the struct.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Arguments</th><th>Result and Purpose</th></tr></thead><tbody>
+        <tr><td>Write_file</td><td><code>(File* value)</code></td><td>Opens <code>name</code> in write mode <code>"w"</code>, writes the string from <code>value</code> and closes the file. Returns the number of characters written, or <code>-1</code>, if the file could not be opened.</td></tr>
+        <tr><td>Read_file</td><td><code>(File* value)</code></td><td>Opens the file, gets its size using <code>Size_info</code>, allocates a buffer, and reads data using <code>fgets</code>. Returns <code>0</code> on successful reading and <code>1</code> on error.</td></tr>
+        <tr><td>Size_info</td><td><code>(File* value)</code></td><td>Returns the file size in bytes using <code>ftell</code>; returns <code>-1</code> if the file cannot be opened.</td></tr>
+        <tr><td>append</td><td><code>(File* value, char text[])</code></td><td>Opens the file in append mode <code>"a"</code> and appends the supplied C string to the end. No value is returned.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Calling File Methods</span><button class="copy" data-copy="file-example">Copy</button></div><pre id="file-example"><code>File logFile.Start ~ ;
+strcpy(logFile.name, "app.log") ;
+logFile.value = "EYE started\n" ;
+@ logFile.Write_file(&amp;logFile) ;
+@ printf("size = %ld\n", logFile.Size_info(&amp;logFile)) ;</code></pre></div>
+      <div class="callout warn">The <code>"w"</code> mode used by <code>Write_file</code> overwrites the existing file. To append to the end, use <code>append</code>.</div>
+
+      <h3 id="api-byte">Byte — Byte Buffer</h3>
+      <p><code>Byte</code> stores <code>Norm* value</code> and the number of bytes in <code>Size</code>. In the core, <code>Norm</code> is defined as <code>unsigned char</code>. All methods accept a <code>Byte*</code> pointer.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Arguments</th><th>Result and Purpose</th></tr></thead><tbody>
+        <tr><td>Delete_byte</td><td><code>(Byte* value)</code></td><td>Frees the buffer, sets <code>value = NULL</code> and <code>Size = 0</code>.</td></tr>
+        <tr><td>Nul_byte</td><td><code>(Byte* value, int count)</code></td><td>Frees the previous buffer, allocates <code>count</code> zero-initialized bytes using <code>calloc</code> and stores the count in <code>Size</code>.</td></tr>
+        <tr><td>Redect_byte</td><td><code>(Byte* value, int count)</code></td><td>Resizes the buffer using <code>realloc</code>. This is the API name; the bound implementation function is named <code>Redirect_byte</code>.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Allocating a Byte Buffer</span><button class="copy" data-copy="byte-example">Copy</button></div><pre id="byte-example"><code>Byte payload.Start ~ ;
+@ payload.Nul_byte(&amp;payload, 256) ;
+@ printf("bytes = %d\n", payload.Size) ;
+@ payload.Delete_byte(&amp;payload) ;</code></pre></div>
+
+      <h3 id="api-lists">Lists: Int_list, Float_list, Double_list, Bool_list, String_list, File_list</h3>
+      <p>Lists are structs with a pointer to the <code>value</code> array and a <code>Size</code> field. Each list type follows the same general method pattern: free memory, allocate a new array, resize it, and join the elements into a single string.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>List Type</th><th>Array Element</th><th>Methods</th><th>Join Output</th></tr></thead><tbody>
+        <tr><td>Int_list</td><td><code>Int</code></td><td><code>Delete_int</code>, <code>Nul_int</code>, <code>Redect_int</code>, <code>Join_int</code></td><td>Comma-separated numbers</td></tr>
+        <tr><td>Float_list</td><td><code>Float</code></td><td><code>Delete_float</code>, <code>Nul_float</code>, <code>Redect_float</code>, <code>Join_float</code></td><td>Numbers in <code>%f</code> format, comma-separated</td></tr>
+        <tr><td>Double_list</td><td><code>Double</code></td><td><code>Delete_double</code>, <code>Nul_double</code>, <code>Redect_double</code>, <code>Join_double</code></td><td>Numbers in <code>%f</code> format, comma-separated</td></tr>
+        <tr><td>Bool_list</td><td><code>Bool</code></td><td><code>Delete_bool</code>, <code>Nul_bool</code>, <code>Redect_bool</code>, <code>Join_bool</code></td><td><code>1</code> or <code>0</code> format, comma-separated</td></tr>
+        <tr><td>String_list</td><td><code>String</code></td><td><code>Delete_string</code>, <code>Nul_stirng</code>, <code>Redect_string</code>, <code>Join_string</code></td><td>Comma-separated strings</td></tr>
+        <tr><td>File_list</td><td><code>File</code></td><td><code>Delete_file</code>, <code>Nul_file</code>, <code>Redect_file</code>, <code>Join_file</code></td><td>Comma-separated file names</td></tr>
+      </tbody></table></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Method Family</th><th>Arguments</th><th>Behavior</th></tr></thead><tbody>
+        <tr><td>Delete_*</td><td><code>(List* value)</code></td><td>Frees the array, sets the pointer <code>value</code> to <code>NULL</code> and resets <code>Size</code> to <code>0</code>.</td></tr>
+        <tr><td>Nul_*</td><td><code>(List* value, int count)</code></td><td>Frees the old array and allocates a new zero-initialized array of <code>count</code> elements using <code>calloc</code>. Updates <code>Size</code>.</td></tr>
+        <tr><td>Redect_*</td><td><code>(List* value, int count)</code></td><td>Resizes the existing array using <code>realloc</code>; on success, updates the pointer and <code>Size</code>. The internal implementation functions are named <code>Redirect_*</code>.</td></tr>
+        <tr><td>Join_*</td><td><code>(List* value)</code></td><td>Creates and returns a new <code>String</code> struct with comma-separated elements. Memory for the resulting string is dynamically allocated.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Int_list Example</span><button class="copy" data-copy="list-example">Copy</button></div><pre id="list-example"><code>Int_list numbers.Start ~ ;
+@ numbers.Nul_int(&amp;numbers, 3) ;
+numbers.value[0].value = 10 ;
+numbers.value[1].value = 20 ;
+numbers.value[2].value = 30 ;
+String joined.Start ~ ;
+joined = numbers.Join_int(&amp;numbers) ;
+@ printf("%s\n", joined.value) ;
+@ free(joined.value) ;
+@ numbers.Delete_int(&amp;numbers) ;</code></pre></div>
+      <div class="callout warn">The parameter <code>count</code> is the number of elements/bytes, not the last index. After <code>Nul_*</code> valid indices range from <code>0</code> to <code>Size - 1</code>. The result of <code>Join_*</code> is a newly allocated string; it should be freed after use.</div>
+
+      <h3>Repeated Type Shorthand: <code>^</code></h3>
+      <p>The symbol <code>^</code> repeats the last explicitly declared type. This is declaration shorthand, not an exponentiation operator.</p>
+      <div class="code-wrap"><div class="code-top"><span>The ^ Operator</span><button class="copy" data-copy="caret">Copy</button></div><pre id="caret"><code>Int first.Start = 10 ;
+^ second.Start = 20 ;
+^ third.Start ~ ;
+
+Float pi.Start = 3.14159 ;
+^ radius.Start = 2.5 ;
+^ scale.Start ~ ;</code></pre></div>
+      <div class="callout">After changing types, specify the new type explicitly: for example, after a group of <code>Int</code> write <code>Float</code>, and subsequent <code>^</code> will repeat <code>Float</code>.</div>
+
+      <h3>Declaration Marker Without Assignment: <code>~</code></h3>
+      <p>If an initial value is not required, use <code>=</code> in a <code>.Start</code> declaration instead of the equals sign. This option is useful when the field will be populated later or memory/an array will be prepared by the corresponding method. <code>~</code>. </p>
+      <div class="code-wrap"><div class="code-top"><span>Explicit and Deferred Initialization</span><button class="copy" data-copy="tilde-example">Copy</button></div><pre id="tilde-example"><code>Int readyValue.Start = 5 ;
+Int inputValue.Start ~ ;
+String text.Start ~ ;
+Int_list items.Start ~ ;
+
+inputValue.value = 42 ;
+text.value = malloc(128) ;
+items.Nul_int(&amp;items, 10) ;</code></pre></div>
+      <div class="callout warn">For pointer-based types (<code>String</code>, <code>File</code>, <code>Byte</code>, and lists), memory and pointers must be prepared before use. Declaring a variable with <code>~</code> does not allocate a buffer automatically.</div>
+    </section>
+
+    <section id="imports">
+      <div class="section-head"><div class="section-num">06</div><div><h2>Imports and C Functions</h2><p>The import section is located at the beginning of the program and ends with the marker <code>import stop_import</code>.</p></div></div>
+      <div class="code-wrap"><div class="code-top"><span>Import Order</span><button class="copy" data-copy="imports">Copy</button></div><pre id="imports"><code>import net ;
+import my_library ;
+
+@ int twice(int x) {
+    return x * 2 ;
+} ;
+
+import stop_import ;
+
+Int value.Start = 21 ;
+@ printf("%d\n", twice(value.value)) ;
+
+end</code></pre></div>
+      <ul class="muted">
+        <li><code>import my_library;</code> includes the contents of the import file in the generated C code.</li>
+        <li><code>import net;</code> enables the additional Go networking runtime component.</li>
+        <li><code>import stop_import;</code> closes the import section and begins the C program body.</li>
+        <li>Declarations prefixed with <code>@</code>, that appear before <code>stop_import</code>, are added to the list of C functions.</li>
+      </ul>
+      <div class="callout warn">Place functions that must be available as C declarations before <code>import stop_import</code>. After this marker, write the executable program code.</div>
+    </section>
+
+    <section id="net">
+      <div class="section-head"><div class="section-num">07</div><div><h2>Networking Module <code>net</code></h2><p>The built-in module lets you define an HTTP server in EYE. The compiler generates Go wrappers, while user-data processing can be performed in C.</p></div></div>
+      <div class="code-wrap"><div class="code-top"><span>EYE HTTP Server Skeleton</span><button class="copy" data-copy="httpserver">Copy</button></div><pre id="httpserver"><code>import net ;
+import stop_import ;
+
+String packet.Start = malloc(4096) ;
+
+for ( ; ; ) {
+    if ( fgets(packet.value, 4096, stdin) == NULL ) {
+        break ;
+    } ;
+
+    if ( strncmp(packet.value, "!value ", 7) == 0 ) {
+        printf("$text/plain; charset=utf-8!Hello! This is the EYE server\n") ;
+    } else {
+        printf("$ok\n") ;
+    } ;
+
+    fflush(stdout) ;
+} ;
+
+net_http_server web.Start = "/" ;
+net_http_server web.Query ;
+net_http_server web.Write ;
+net_http_server web.Stop ;
+net_http_server web.Where ;
+net_http_server web.Listen = "127.0.0.1:8080" ;
+
+end</code></pre></div>
+      <h3>net_http_server Methods</h3>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Construct</th><th>Role</th></tr></thead><tbody>
+        <tr><td>.Start</td><td>Starts an HTTP handler and sets its path, for example <code>"/"</code>.</td></tr>
+        <tr><td>.Address</td><td>Passes the client address.</td></tr>
+        <tr><td>.Query</td><td>Passes the URL and query parameters.</td></tr>
+        <tr><td>.Method</td><td>Passes the HTTP request method.</td></tr>
+        <tr><td>.Header</td><td>Passes HTTP headers.</td></tr>
+        <tr><td>.ValueUser</td><td>Passes the request Referer.</td></tr>
+        <tr><td>.Form</td><td>Passes form data.</td></tr>
+        <tr><td>.Byte</td><td>Passes the request body as a byte string.</td></tr>
+        <tr><td>.Cookie</td><td>Passes request cookies.</td></tr>
+        <tr><td>.Write</td><td>Requests the response generated by the C component and writes it to the HTTP response.</td></tr>
+        <tr><td>.Stop</td><td>Closes the handler body.</td></tr>
+        <tr><td>.Where</td><td>Closes the handler registration call.</td></tr>
+        <tr><td>.Listen</td><td>Starts the HTTP server at the specified address.</td></tr>
+      </tbody></table></div>
+      <p class="muted">Within a single handler, request-reading and response-sending methods are placed between the handler's opening and closing statements. The order of calls matters.</p>
+    </section>
+
+    <section id="bridge">
+      <div class="section-head"><div class="section-num">08</div><div><h2>How Languages Communicate</h2><p>The key idea behind EYE is that not every component has to be written in the same language. The runtime connects processes through different communication channels.</p></div></div>
+      <div class="flow">
+        <div class="flow-step"><b>HTTP / Go</b>Receives a request and creates a message</div>
+        <div class="flow-step"><b>UDS</b>Unix Domain Socket between Go and the bridge</div>
+        <div class="flow-step"><b>Core Bridge</b>Forwards data between channels</div>
+        <div class="flow-step"><b>stdin / stdout</b>C process input and output streams</div>
+        <div class="flow-step"><b>C / EYE</b>Executes user logic</div>
+      </div>
+      <div class="two">
+        <article class="card"><h3>Important: C Does Not Connect to UDS</h3><p>C receives messages through standard input (`stdin`) and sends responses through standard output (`stdout`). UDS is used on the Go and core-bridge sides.</p></article>
+        <article class="card"><h3>Response Marker <code>$</code></h3><p>The bridge recognizes C lines that begin with <code>$</code>, removes the prefix, and sends the contents back to Go through UDS.</p></article>
+      </div>
+      <h3>HTTP Response Protocol</h3>
+      <p>To process a request, C reads a line from <code>stdin</code>. A regular request can be acknowledged with <code>$ok</code>. For the response command <code>!value</code> C sends the content type and body separated by <code>!</code>.</p>
+      <div class="code-wrap"><div class="code-top"><span>Response Format from C</span><button class="copy" data-copy="response">Copy</button></div><pre id="response"><code>if ( strncmp(packet.value, "!value ", 7) == 0 ) {
+    printf("$text/plain; charset=utf-8!Response from EYE\n") ;
+} else {
+    printf("$ok\n") ;
+} ;
+fflush(stdout) ;</code></pre></div>
+      <div class="callout">`Write` on the Go side sends the request `!value`, receives a string in the format `Content-Type!body`, sets the HTTP header and writes the body to the client.</div>
+      <h3>Connecting Other Languages</h3>
+      <p>The project architecture allows additional languages to be connected to the compiler. A new language requires a corresponding generator/launch adapter and an agreed message protocol. UDS is one method of inter-process communication. The presence of UDS alone does not mean an arbitrary language can be connected automatically without an adapter.</p>
+    </section>
+
+    <section id="resilience">
+      <div class="section-head"><div class="section-num">09</div><div><h2>Fault Tolerance and Component Restart</h2><p>The EYE author describes a recovery model conceptually similar to the Elixir approach: individual parts of an application can be restarted after a failure.</p></div></div>
+      <div class="grid">
+        <article class="card"><h3>Component Isolation</h3><p>An application can be organized into separate components so that a failure in one component does not necessarily stop the entire application.</p></article>
+        <article class="card"><h3>Restart</h3><p>The runtime is designed to recover failed components by restarting them, rather than only restarting the entire process.</p></article>
+        <article class="card"><h3>External Processes</h3><p>An architecture with multiple languages and IPC channels makes it possible to divide responsibilities among separate processes.</p></article>
+      </div>
+      <div class="callout warn">This description reflects the stated EYE concept. The provided source does not contain a complete user-facing syntax for a supervisor tree, restart strategies, or restart-intensity policies. Therefore, no invented example of such directives is included here.</div>
+      <p>The similarity to Elixir is conceptual: the idea of recovering individual components. This does not imply OTP compatibility or an identical supervisor implementation.</p>
+    </section>
+
+    <section id="build">
+      <div class="section-head"><div class="section-num">10</div><div><h2>Compilation and Execution</h2><p>The compiler reads the <code>.eye</code>, generates C code and, when <code>import net</code> is enabled, also generates a Go component.</p></div></div>
+      <div class="flow">
+        <div class="flow-step"><b>1 · EYE</b>Source file `.eye`</div>
+        <div class="flow-step"><b>2 · Parser</b>Tokenization and Parsing</div>
+        <div class="flow-step"><b>3 · C</b>C Code Generation and Build</div>
+        <div class="flow-step"><b>4 · Go</b>Generation and Build with `net`</div>
+        <div class="flow-step"><b>5 · Runtime</b>Starting Processes and Bridges</div>
+      </div>
+      <h3>Compiler Prompts</h3>
+      <ol class="muted">
+        <li>Output C file name.</li>
+        <li>An additional command or commands, if needed.</li>
+        <li>Program execution time.</li>
+        <li>Source file name `.eye`.</li>
+        <li>Go file name, if `import net`.</li>
+      </ol>
+      <p>In the current implementation, GCC is used to build C; the Go toolchain is used for the networking component. When mathematical functions are used, the core links the math library.</p>
+      <div class="callout warn">Launch modes and bridge behavior depend on the core version. Use matching compiler and runtime versions; do not mix core files from different development iterations.</div>
+    </section>
+
+    <section id="limits">
+      <div class="section-head"><div class="section-num">11</div><div><h2>Current Limitations</h2><p>To keep the documentation useful, it is important to distinguish implemented features from areas of future development.</p></div></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Area</th><th>Status Based on Available Material</th></tr></thead><tbody>
+        <tr><td>Variables `.Start`</td><td>Implemented in the parser and C generator; type methods are bound when supported structs are created.</td></tr>
+        <tr><td>`^` Shorthand</td><td>Recognized as a repeat of the last-used type.</td></tr>
+        <tr><td>`@` Calls</td><td>Used to call C functions and declare user-defined C functions before `stop_import`.</td></tr>
+        <tr><td>`net` Module</td><td>Connects the Go component, HTTP functions, and UDS bridge.</td></tr>
+        <tr><td>Other Languages</td><td>Can be connected architecturally through adapters; the set of available adapters depends on the project version.</td></tr>
+        <tr><td>Component Restart</td><td>A stated runtime capability; the complete user-facing syntax for recovery policies is not specified here.</td></tr>
+      </tbody></table></div>
+      <div class="callout">Practical tip: for a new example, first test minimal EYE code with your core version, then add interaction with external processes. This helps distinguish a language error from a bridge or generator error.</div>
+    </section>
+
+    <footer class="footer">EYE · Documentation in English<br>Prepared based on the C structs and method-binding table in the provided core, as well as the EYE author's clarifications about the syntax of <code>^</code> and <code>~</code>. Method names are intentionally preserved as spelled in the core, including historical variants such as <code>Size_stirng</code>, <code>Uper</code> and <code>Redect</code>.</footer>
+  </div>
+</main>
+</div>
+<script>
+(function(){
+  const search=document.getElementById('navSearch');
+  const links=[...document.querySelectorAll('#nav a')];
+  search.addEventListener('input',()=>{const q=search.value.toLowerCase();links.forEach(a=>{a.style.display=a.textContent.toLowerCase().includes(q)?'flex':'none';});});
+  document.querySelectorAll('.copy').forEach(btn=>btn.addEventListener('click',async()=>{const target=document.getElementById(btn.dataset.copy);if(!target)return;const text=target.innerText;try{await navigator.clipboard.writeText(text);btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy',1200);}catch(e){btn.textContent='Failed';setTimeout(()=>btn.textContent='Copy',1200);}}));
+  const sections=[...document.querySelectorAll('main section')];
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.hash==='#'+entry.target.id));}}),{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(s=>observer.observe(s));
+})();
+</script>
+</body>
+</html>
