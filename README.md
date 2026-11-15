@@ -1,19 +1,38 @@
-## 🏗️ Architecture
+# EYE Programming Language
 
-Control is built on a modular, multi-language architecture designed to leverage the strengths of both C and Go. It uses a dual-backend approach to separate high-performance hardware control from high-level networking.
+[![Telegram](https://img.shields.io/badge/Telegram-Join_Chat-blue?logo=telegram&style=for-the-badge)](https://t.me/control_eye)
+![Status](https://img.shields.io/badge/status-early_alpha-orange)
+![License](https://img.shields.io/badge/license-Apache_2.0-blue)
+![Backend](https://img.shields.io/badge/backend-C_&_Go-green)
 
-### 1. Compilation Pipeline
-The compiler reads `.eye` source files and converts them into an Abstract Syntax Tree (AST). Then, it routes the AST to specific code generators:
-*   **C Generator (Core Backend):** Translates core logic, types, and control structures into standard C code. It maps EYE types (e.g., `Int`, `String`) directly to C structs with specific method pointers.
-*   **Go Generator (Network Backend):** Triggered only when `import net` is used. It generates a Go wrapper to handle HTTP requests, async networking, and WebSockets.
+**EYE** is a hybrid programming language and transpiler designed to unify the worlds of low-level hardware control and high-level networking into a single, cohesive ecosystem. 
 
-### 2. Runtime & IPC Bridge (The Secret Sauce)
-When both C and Go components are present, they run as separate processes to prevent crashes in one from affecting the other. 
-*   **Unix Domain Socket (UDS):** Go acts as the network listener (HTTP server). When a request arrives, Go forwards it through a UDS bridge.
-*   **stdin/stdout Bridge:** The C process reads incoming data from standard input (`stdin`) and writes responses to standard output (`stdout`). The compiler's runtime wrapper routes these streams through the UDS.
-*   **The `$` Marker:** The C part sends responses starting with a `$` prefix (e.g., `$ok` or `$text/plain!Hello`), which the bridge intercepts, strips, and passes back to Go to form a proper HTTP response.
+Currently, the compiler is distributed as a **single-file monolithic script** for easy setup and rapid testing.
 
-### 3. Type System & Memory
-*   **C-Native Types:** Types like `Int` and `Float` are literally C structures (`struct`) with a `value` field.
-*   **Method Binding:** When a variable is declared using `.Start`, the compiler automatically assigns the correct function pointers (methods) to its struct. For example, `chislo.Chet()` directly calls a C function bound to the `Int` type.
-*   **Manual Memory Control:** Using the `@` prefix, the developer can directly call C standard library functions like `@ malloc()` or `@ free()`, bridging the gap between EYE and low-level memory management.
+## 💡 Motivation & Philosophy
+
+Developers often have to juggle multiple languages: C for embedded systems and performance, Go for backend and networking, and Elixir (or similar) for fault tolerance. **EYE was created to solve this fragmentation.** 
+
+The goal is to allow developers to learn and write in *one* language while utilizing the strengths of others under the hood:
+*   **The Power of C:** Direct memory management, maximum performance, and direct hardware access.
+*   **The Network of Go:** Built-in, high-performance HTTP servers and async networking.
+*   **The Resilience of Elixir:** Inspired by Erlang/Elixir's "let it crash" philosophy, EYE features a runtime manager that isolates the C and Go processes and automatically restarts them if they fail. 
+
+## 🚀 Key Features
+
+*   **Dual-Backend (C & Go):** Automatically transpiles `.eye` files into C code. If `import net` is detected, it also generates a Go web server.
+*   **Elixir-Inspired Fault Tolerance:** The runtime manager launches the compiled C and Go executables as independent processes and monitors them. If one crashes, it is automatically restarted, ensuring high availability.
+*   **Built-in IPC Bridge:** C and Go processes communicate via a Unix Domain Socket (UDS). The C process reads `stdin` and writes to `stdout` (using the `$` prefix), which the Go wrapper intercepts and sends via UDS.
+*   **Method Binding:** EYE types (like `Int`, `String`) are transpiled into C structs with bound function pointers (e.g., `value.Chet()`), bringing a touch of high-level OOP to bare C.
+*   **Minimalist Syntax:** Uses `.Start` for declarations, `^` for type repetition, and `@` to directly call C functions.
+
+## 📦 Code Example
+
+```eye
+import stop_import ;
+
+Int chislo.Start = 12 ;
+@ printf("Number: %d\n", chislo.value) ;
+@ printf("Is even? %d\n", chislo.Chet(chislo)) ;
+
+end
