@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Документация языка программирования EYE: синтаксис, типы данных, методы, компиляция, сетевой модуль, UDS и отказоустойчивость.">
+<title>EYE — подробная документация языка</title>
+<style>
+:root{--bg:#0b1020;--panel:#111a2e;--panel2:#17233b;--line:#273651;--text:#e8eef9;--muted:#a7b5cc;--accent:#79e0c3;--accent2:#8eb7ff;--code:#080d18;--warn:#f4c76b;--good:#8de0b2;--shadow:0 16px 42px rgba(0,0,0,.24)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:86px}body{margin:0;background:radial-gradient(1000px 600px at 80% -10%,rgba(75,122,185,.17),transparent 60%),var(--bg);color:var(--text);font:15px/1.7 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--accent2);text-decoration:none}a:hover{color:var(--accent);text-decoration:underline}.shell{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;padding:26px 18px 30px;border-right:1px solid var(--line);background:rgba(9,15,29,.88);backdrop-filter:blur(12px)}.brand{display:flex;align-items:center;gap:12px;margin:0 8px 26px}.brand-mark{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,#7ae2c5,#79aaff);color:#071321;display:grid;place-items:center;font-weight:900;font-size:18px;box-shadow:0 8px 24px rgba(121,224,195,.2)}.brand strong{display:block;letter-spacing:.12em;font-size:18px}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:.04em}.nav-label{margin:22px 10px 8px;color:#7486a5;text-transform:uppercase;font-size:10px;font-weight:800;letter-spacing:.16em}.nav a{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:9px;color:#bac7dc;font-size:13px;margin:2px 0}.nav a:hover,.nav a.active{background:#17243b;color:var(--accent);text-decoration:none}.nav .num{width:20px;color:#6e82a4;font-size:10px;font-weight:800}.sidebar-note{margin:26px 8px 0;padding:13px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:11px}.main{min-width:0}.topbar{height:62px;position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,58px);border-bottom:1px solid rgba(39,54,81,.75);background:rgba(11,16,32,.84);backdrop-filter:blur(14px)}.crumb{color:var(--muted);font-size:12px}.version{border:1px solid var(--line);padding:5px 10px;border-radius:999px;color:#b9c8de;font-size:11px}.content{max-width:1120px;margin:0 auto;padding:44px clamp(18px,4vw,58px) 90px}.hero{padding:32px 34px;border:1px solid #2b4560;border-radius:22px;background:linear-gradient(120deg,rgba(121,224,195,.12),rgba(142,183,255,.09) 60%,rgba(37,55,88,.3));box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"EYE";position:absolute;right:30px;bottom:-32px;font-size:130px;line-height:1;font-weight:950;letter-spacing:-.08em;color:rgba(205,226,255,.045);pointer-events:none}.eyebrow{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.17em;font-weight:800}.hero h1{font-size:clamp(34px,5vw,56px);line-height:1.04;letter-spacing:-.045em;margin:13px 0 15px}.hero p{max-width:700px;color:#c1cee0;font-size:16px;margin:0}.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.tag{border:1px solid rgba(144,184,221,.25);border-radius:999px;padding:5px 10px;color:#c9d8e9;font-size:11px;background:rgba(9,17,31,.35)}section{margin-top:56px}.section-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px}.section-num{flex:0 0 34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(121,224,195,.12);color:var(--accent);font-size:12px;font-weight:900}.section-head h2{font-size:25px;letter-spacing:-.025em;line-height:1.2;margin:2px 0 7px}.section-head p{margin:0;color:var(--muted);max-width:780px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.card{background:linear-gradient(180deg,rgba(23,35,59,.92),rgba(17,26,46,.94));border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 8px 24px rgba(0,0,0,.12)}.card h3{margin:0 0 7px;font-size:15px}.card p{margin:0;color:var(--muted);font-size:13px}.callout{padding:15px 17px;border-left:3px solid var(--accent);background:rgba(121,224,195,.07);border-radius:0 11px 11px 0;color:#cfdae9;margin:18px 0}.callout.warn{border-left-color:var(--warn);background:rgba(244,199,107,.07)}.code-wrap{margin:16px 0 22px;border:1px solid #2a3953;border-radius:14px;overflow:hidden;background:var(--code);box-shadow:var(--shadow)}.code-top{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:#111a2b;border-bottom:1px solid #26344d;color:#94a8c5;font-size:11px}.copy{border:1px solid #344663;background:#17243a;color:#cbd8e8;padding:4px 9px;border-radius:7px;font-size:11px;cursor:pointer}.copy:hover{color:var(--accent);border-color:var(--accent)}pre{margin:0;padding:17px 19px;overflow:auto;color:#d9e6f8;font:12.5px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:4}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#a9e6d2}.inline{background:#17243a;border:1px solid #2a3b56;padding:1px 5px;border-radius:5px;font-size:.92em}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px;margin:16px 0}.table{width:100%;border-collapse:collapse;min-width:520px;background:rgba(16,25,43,.7)}.table th,.table td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}.table th{background:#17243a;color:#bcd0e8;font-size:11px;text-transform:uppercase;letter-spacing:.08em}.table tr:last-child td{border-bottom:0}.table td:first-child{color:var(--accent);font-weight:700;white-space:nowrap}.muted{color:var(--muted)}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}.flow-step{position:relative;text-align:center;border:1px solid var(--line);border-radius:12px;padding:13px 8px;background:#121d32;font-size:12px;color:#d3deef}.flow-step b{display:block;color:var(--accent);margin-bottom:5px}.flow-step:not(:last-child):after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:#7c94b6;font-size:17px;z-index:2}.footer{margin-top:65px;padding-top:22px;border-top:1px solid var(--line);color:#7f91ad;font-size:11px}.pill{display:inline-block;padding:3px 8px;border-radius:999px;background:rgba(141,224,178,.12);color:var(--good);font-size:10px;font-weight:800;letter-spacing:.06em}.mini-title{color:#8094b1;text-transform:uppercase;font-size:10px;letter-spacing:.12em;font-weight:800;margin:0 0 7px}.kbd{border:1px solid #3b4d69;border-bottom-width:2px;padding:1px 6px;border-radius:5px;font-size:11px;color:#d6e2f2}.toc-search{width:100%;margin:12px 0 8px;padding:9px 11px;background:#111a2c;border:1px solid #2b3a54;border-radius:9px;color:var(--text);outline:none}.toc-search:focus{border-color:var(--accent)}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:15px}.brand{margin-bottom:12px}.nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px}.nav-label,.sidebar-note{display:none}.toc-search{max-width:420px}.topbar{position:relative}.content{padding-top:28px}.flow{grid-template-columns:1fr}.flow-step:not(:last-child):after{content:"↓";right:50%;top:auto;bottom:-17px;transform:translateX(50%)} }
+@media(max-width:650px){.grid,.two{grid-template-columns:1fr}.hero{padding:24px 20px}.hero:after{font-size:85px;right:12px}.section-head h2{font-size:22px}.nav{grid-template-columns:1fr 1fr}.nav a{font-size:12px;padding:7px}.content{padding-left:15px;padding-right:15px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">E</div><div><strong>EYE</strong><small>язык программирования</small></div></div>
+  <input class="toc-search" id="navSearch" placeholder="Найти раздел…" aria-label="Найти раздел">
+  <div class="nav-label">Руководство</div>
+  <nav class="nav" id="nav">
+    <a href="#intro"><span class="num">01</span>Обзор</a>
+    <a href="#quick"><span class="num">02</span>Первый пример</a>
+    <a href="#syntax"><span class="num">03</span>Синтаксис</a>
+    <a href="#types"><span class="num">04</span>Типы данных</a>
+    <a href="#methods"><span class="num">05</span>Методы и `^`</a>
+    <a href="#imports"><span class="num">06</span>Импорты и C-функции</a>
+    <a href="#net"><span class="num">07</span>Сетевой модуль</a>
+    <a href="#bridge"><span class="num">08</span>Связь языков</a>
+    <a href="#resilience"><span class="num">09</span>Отказоустойчивость</a>
+    <a href="#build"><span class="num">10</span>Сборка и запуск</a>
+    <a href="#limits"><span class="num">11</span>Текущие оговорки</a>
+  </nav>
+  <div class="sidebar-note">Документация подготовлена по предоставленному ядру и описанию автора EYE. Некоторые детали зависят от версии компилятора.</div>
+</aside>
+<main class="main">
+  <div class="topbar"><div class="crumb">Документация <span class="muted">/</span> Язык и runtime</div><div class="version">Подробное руководство · каталог API</div></div>
+  <div class="content">
+    <header class="hero">
+      <div class="eyebrow">Язык · компилятор · runtime</div>
+      <h1>EYE</h1>
+      <p>Язык с собственным синтаксисом и типами данных, компиляцией основной логики в C и возможностью подключать дополнительные языки и сетевые компоненты через runtime-мосты.</p>
+      <div class="hero-tags"><span class="tag">C backend</span><span class="tag">Go / net</span><span class="tag">UDS bridge</span><span class="tag">Type methods</span><span class="tag">Restartable parts</span></div>
+    </header>
+
+    <section id="intro">
+      <div class="section-head"><div class="section-num">01</div><div><h2>Что такое EYE</h2><p>EYE проектируется как язык и среда выполнения, которые могут объединять несколько языков и компонентов в одном приложении.</p></div></div>
+      <div class="grid">
+        <article class="card"><h3>Свой синтаксис</h3><p>Объявления через <code>.Start</code>, методы через точку, завершение программы через <code>end</code>, а также сокращение типа с помощью <code>^</code>.</p></article>
+        <article class="card"><h3>Типы со своими методами</h3><p>Тип данных несёт поле <code>value</code> и набор предназначенных ему методов. Компилятор связывает доступные указатели методов при создании переменной.</p></article>
+        <article class="card"><h3>Многоязычная архитектура</h3><p>Основная логика генерируется в C. Встроенный модуль <code>net</code> добавляет Go-компонент и мост обмена сообщениями.</p></article>
+        <article class="card"><h3>IPC через UDS</h3><p>Go и связующая часть компилятора обмениваются сообщениями через Unix Domain Socket. C-часть взаимодействует через стандартные потоки.</p></article>
+        <article class="card"><h3>Восстановление частей</h3><p>По замыслу EYE, отдельные части приложения можно перезапускать после сбоя, не обязательно перезапуская всё приложение целиком.</p></article>
+        <article class="card"><h3>Расширяемость</h3><p>К компилятору можно подключать другие языки через дополнительные генераторы и адаптеры обмена сообщениями.</p></article>
+      </div>
+      <div class="callout">EYE — развивающийся проект. Эта страница описывает синтаксис и механизмы, которые видны в предоставленном ядре, а также архитектурные возможности, заявленные автором.</div>
+    </section>
+
+    <section id="quick">
+      <div class="section-head"><div class="section-num">02</div><div><h2>Первый пример</h2><p>Минимальная программа создаёт целое число, использует метод типа и выводит результат.</p></div></div>
+      <div class="code-wrap"><div class="code-top"><span>hello.eye · пример EYE</span><button class="copy" data-copy="hello">Копировать</button></div><pre id="hello"><code>import stop_import ;
+
+Int chislo.Start = 12 ;
+
+@ printf("Число: %d\n", chislo.value) ;
+@ printf("Чётное? %d\n", chislo.Chet(chislo)) ;
+
+end</code></pre></div>
+      <p class="muted">В текущей реализации <code>Chet</code> возвращает <code>1</code>, если число чётное, и <code>0</code>, если нечётное.</p>
+    </section>
+
+    <section id="syntax">
+      <div class="section-head"><div class="section-num">03</div><div><h2>Основы синтаксиса</h2><p>Программы EYE используют знакомые управляющие конструкции, но собственные правила объявления переменных и вызова внешних функций.</p></div></div>
+      <div class="two">
+        <div><div class="mini-title">Объявление</div><div class="code-wrap"><div class="code-top"><span>Переменные</span><button class="copy" data-copy="decl">Копировать</button></div><pre id="decl"><code>Int count.Start = 10 ;
+Float pi.Start = 3.14159 ;
+String title.Start = "EYE" ;
+Bool ready.Start = 1 ;</code></pre></div></div>
+        <div><div class="mini-title">Доступ к значению</div><div class="code-wrap"><div class="code-top"><span>Поле value</span><button class="copy" data-copy="value">Копировать</button></div><pre id="value"><code>count.value = count.value + 1 ;
+@ printf("%d\n", count.value) ;</code></pre></div></div>
+      </div>
+      <h3>Объявление без начального значения: <code>~</code></h3>
+      <p>Если переменной не нужно задавать начальное значение в момент объявления, вместо присваивания через <code>=</code> используется маркер <code>~</code>. Он означает: объявить переменную, не задавая ей начальное значение в исходной строке.</p>
+      <div class="code-wrap"><div class="code-top"><span>Объявление без явного начального значения</span><button class="copy" data-copy="tilde-decl">Копировать</button></div><pre id="tilde-decl"><code>Int counter.Start ~ ;
+String buffer.Start ~ ;
+^ nextCounter.Start ~ ;</code></pre></div>
+      <p class="muted">Сравни: <code>Int counter.Start = 0;</code> задаёт начальное значение явно, а <code>Int counter.Start ~;</code> объявляет переменную без такого присваивания. После объявления значение можно задать через поле <code>.value</code>. Не путай этот маркер с оператором побитового отрицания C.</p>
+      <h3>Условия и циклы</h3>
+      <div class="code-wrap"><div class="code-top"><span>if и for</span><button class="copy" data-copy="control">Копировать</button></div><pre id="control"><code>Int number.Start = 7 ;
+
+if ( number.value > 0 ) {
+    @ printf("positive\n") ;
+} ;
+
+for ( int i = 0 ; i < 3 ; i = i + 1 ) {
+    @ printf("%d\n", i) ;
+} ;
+
+end</code></pre></div>
+      <p class="muted">В предоставленном ядре распознаются управляющие конструкции <code>if</code>, <code>for</code> и <code>switch</code>. Внутри блоков используется синтаксис, близкий к C.</p>
+      <h3>Вызов C-функций</h3>
+      <p>Вызов с префиксом <code>@</code> передаётся в генерируемый C-код. Например:</p>
+      <div class="code-wrap"><div class="code-top"><span>Вызов стандартной функции</span><button class="copy" data-copy="printf">Копировать</button></div><pre id="printf"><code>@ printf("Hello from EYE\n") ;
+@ scanf("%d", &amp;count.value) ;</code></pre></div>
+    </section>
+
+    <section id="types">
+      <div class="section-head"><div class="section-num">04</div><div><h2>Типы данных</h2><p>Встроенные типы EYE представлены структурами C. У большинства типов основное содержимое находится в поле <code>value</code>; у контейнеров дополнительно есть <code>Size</code>.</p></div></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Тип EYE</th><th>Назначение</th><th>Основные поля</th><th>Набор методов</th></tr></thead><tbody>
+        <tr><td>Int</td><td>Целое число</td><td><code>int value</code></td><td>Преобразование, сравнение, степень, проверка чётности, длина</td></tr>
+        <tr><td>Float</td><td>Число одинарной точности</td><td><code>float value</code></td><td>Преобразование в целое, строковое представление, сравнение</td></tr>
+        <tr><td>Double</td><td>Число двойной точности</td><td><code>double value</code></td><td>Преобразование в целое, строковое представление, сравнение</td></tr>
+        <tr><td>String</td><td>Строка C</td><td><code>char* value</code></td><td>Выделение буфера, преобразование, регистр, поиск подстроки</td></tr>
+        <tr><td>Bool</td><td>Логическое значение</td><td><code>_Bool value</code></td><td>В текущем ядре указателей методов нет</td></tr>
+        <tr><td>File</td><td>Файл и его содержимое</td><td><code>char* value</code>, <code>char name[100]</code></td><td>Запись, чтение, размер, добавление в конец</td></tr>
+        <tr><td>Byte</td><td>Байтовый буфер</td><td><code>Norm* value</code>, <code>int Size</code></td><td>Освобождение, выделение, изменение размера</td></tr>
+        <tr><td>Int_list</td><td>Массив целых чисел</td><td><code>Int* value</code>, <code>int Size</code></td><td>Удаление, выделение, изменение размера, объединение в строку</td></tr>
+        <tr><td>Float_list</td><td>Массив Float</td><td><code>Float* value</code>, <code>int Size</code></td><td>Удаление, выделение, изменение размера, объединение в строку</td></tr>
+        <tr><td>Double_list</td><td>Массив Double</td><td><code>Double* value</code>, <code>int Size</code></td><td>Удаление, выделение, изменение размера, объединение в строку</td></tr>
+        <tr><td>String_list</td><td>Массив строк</td><td><code>String* value</code>, <code>int Size</code></td><td>Удаление, выделение, изменение размера, объединение в строку</td></tr>
+        <tr><td>Bool_list</td><td>Массив логических значений</td><td><code>Bool* value</code>, <code>int Size</code></td><td>Удаление, выделение, изменение размера, объединение в строку</td></tr>
+        <tr><td>File_list</td><td>Массив файлов</td><td><code>File* value</code>, <code>int Size</code></td><td>Удаление, выделение, изменение размера, объединение имён в строку</td></tr>
+      </tbody></table></div>
+      <div class="two">
+        <article class="card"><h3>Поле <code>.value</code></h3><p>У скалярных типов оно содержит само значение. У <code>String</code> и <code>File</code> это указатель на символьный буфер; у списков — указатель на массив элементов; у <code>Byte</code> — указатель на байты.</p></article>
+        <article class="card"><h3>Поле <code>.Size</code></h3><p>У <code>Byte</code> и типов <code>*_list</code> хранит количество выделенных/доступных элементов согласно операциям выделения и изменения размера.</p></article>
+      </div>
+      <div class="callout warn"><strong>Внутренний тип:</strong> в C-части ядра определён псевдоним <code>Norm</code> как <code>unsigned char</code>. Он используется для элементов <code>Byte</code>, но в таблице автоматической привязки методов отдельного типа EYE <code>Norm</code> нет.</div>
+      <div class="callout">Ниже каталог методов по каждому типу. Имена сохранены в написании ядра, в том числе исторические варианты <code>Size_stirng</code>, <code>Uper</code>, <code>Redect</code> и <code>Nul_stirng</code>.</div>
+    </section>
+
+    <section id="methods">
+      <div class="section-head"><div class="section-num">05</div><div><h2>Методы и сокращения типов</h2><p>При объявлении объекта через <code>.Start</code> ядро обнуляет структуру и привязывает доступные указатели методов соответствующего типа. Вызов выполняется через переменную: <code>object.Method(object, ...)</code> или с адресом, если сигнатура метода принимает указатель.</p></div></div>
+      <div class="code-wrap"><div class="code-top"><span>Пример метода Int</span><button class="copy" data-copy="methodex">Копировать</button></div><pre id="methodex"><code>Int chislo.Start = 12 ;
+@ printf("Чётное? %d\n", chislo.Chet(chislo)) ;
+@ printf("Цифр: %d\n", chislo.Int_length(chislo)) ;</code></pre></div>
+
+      <h3 id="api-int">Int — целые числа</h3>
+      <p><code>Int</code> хранит значение типа C <code>int</code>. Методы позволяют преобразовывать число, сравнивать его, возводить в целую степень, проверять чётность и считать количество цифр.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Метод</th><th>Аргументы после имени метода</th><th>Результат и назначение</th></tr></thead><tbody>
+        <tr><td>Float_conv</td><td><code>(Int value)</code></td><td>Преобразует <code>value.value</code> в <code>float</code>. Внутренняя функция реализации называется <code>Int_to_float</code>.</td></tr>
+        <tr><td>Max_int</td><td><code>(Int value, int other)</code></td><td>Сравнивает число с <code>other</code>: возвращает <code>1</code>, если текущее больше; <code>0</code>, если равны; <code>-1</code>, если меньше.</td></tr>
+        <tr><td>Int_to_string</td><td><code>(Int value, char buffer[50])</code></td><td>Записывает десятичное представление числа в переданный буфер и возвращает указатель на него. Буфер должен вмещать строку и завершающий нулевой символ.</td></tr>
+        <tr><td>Repeat_int</td><td><code>(Int value, int exp)</code></td><td>Возвращает число, умноженное само на себя <code>exp</code> раз: фактически <code>value.value</code> в целой степени <code>exp</code>. При <code>exp ≤ 0</code> текущая реализация возвращает <code>1</code>.</td></tr>
+        <tr><td>Chet</td><td><code>(Int value)</code></td><td>Проверяет чётность. Возвращает <code>1</code> для чётного числа и <code>0</code> для нечётного.</td></tr>
+        <tr><td>Int_length</td><td><code>(Int value)</code></td><td>Возвращает количество цифр в десятичной записи числа. Для <code>0</code> возвращает <code>1</code>; знак минус не считается.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Использование Int</span><button class="copy" data-copy="int-example">Копировать</button></div><pre id="int-example"><code>Int number.Start = 125 ;
+@ printf("float = %f\n", number.Float_conv(number)) ;
+@ printf("compare = %d\n", number.Max_int(number, 100)) ;
+@ printf("even = %d\n", number.Chet(number)) ;
+@ printf("digits = %d\n", number.Int_length(number)) ;</code></pre></div>
+
+      <h3 id="api-float">Float — числа одинарной точности</h3>
+      <p><code>Float</code> хранит <code>float value</code>. Методы преобразуют его в целое или строку и сравнивают с другим значением.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Метод</th><th>Аргументы</th><th>Результат и назначение</th></tr></thead><tbody>
+        <tr><td>Conv_int_min</td><td><code>(Float value)</code></td><td>Преобразует Float в <code>int</code> обычным приведением C: дробная часть отбрасывается в сторону нуля.</td></tr>
+        <tr><td>Conv_int_max</td><td><code>(Float value)</code></td><td>Возвращает округлённое до целого значение через <code>roundf</code>.</td></tr>
+        <tr><td>Float_to_string</td><td><code>(Float value, char buffer[50])</code></td><td>Записывает значение в буфер с форматом <code>%f</code> и возвращает указатель на буфер (обычно шесть знаков после точки по правилам printf).</td></tr>
+        <tr><td>Max_float</td><td><code>(Float value, float other)</code></td><td>Сравнение: <code>1</code> — больше, <code>0</code> — равно, <code>-1</code> — меньше.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Использование Float</span><button class="copy" data-copy="float-example">Копировать</button></div><pre id="float-example"><code>Float price.Start = 12.75 ;
+@ printf("truncated = %d\n", price.Conv_int_min(price)) ;
+@ printf("rounded = %d\n", price.Conv_int_max(price)) ;
+@ printf("compare = %d\n", price.Max_float(price, 10.0)) ;</code></pre></div>
+
+      <h3 id="api-double">Double — числа двойной точности</h3>
+      <p><code>Double</code> хранит <code>double value</code>. Набор методов близок к <code>Float</code>, но работает с типом двойной точности.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Метод</th><th>Аргументы</th><th>Результат и назначение</th></tr></thead><tbody>
+        <tr><td>Conv_int_min</td><td><code>(Double value)</code></td><td>Преобразует значение в <code>int</code> с отбрасыванием дробной части в сторону нуля.</td></tr>
+        <tr><td>Conv_int_max</td><td><code>(Double value)</code></td><td>Округляет значение до ближайшего целого через <code>round</code>.</td></tr>
+        <tr><td>String_double</td><td><code>(Double value, char buffer[50])</code></td><td>Записывает десятичное представление через <code>sprintf(..., "%f", ...)</code>. Внутренняя функция реализации называется <code>Double_to_string</code>.</td></tr>
+        <tr><td>Max_double</td><td><code>(Double value, double other)</code></td><td>Сравнение: <code>1</code> — больше, <code>0</code> — равно, <code>-1</code> — меньше.</td></tr>
+      </tbody></table></div>
+
+      <h3 id="api-string">String — строки</h3>
+      <p><code>String</code> содержит <code>char* value</code>. Это C-строка, завершающаяся символом <code>\0</code>. Методы изменения регистра и поиска работают непосредственно с буфером строки.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Метод</th><th>Аргументы</th><th>Результат и назначение</th></tr></thead><tbody>
+        <tr><td>Size_stirng</td><td><code>(String* value, int size)</code></td><td>Выделяет буфер указанного размера, копирует старое содержимое (не более <code>size - 1</code> байт) и ставит завершающий <code>\0</code>. Написание <code>Size_stirng</code> — точное имя поля API; реализация называется <code>Size_string</code>.</td></tr>
+        <tr><td>String_to_int</td><td><code>(String value)</code></td><td>Преобразует начало строки в <code>int</code> через C-функцию <code>atoi</code>.</td></tr>
+        <tr><td>String_to_float</td><td><code>(String value)</code></td><td>Преобразует начало строки во <code>float</code> через <code>atof</code>.</td></tr>
+        <tr><td>Lower</td><td><code>(String* value)</code></td><td>Меняет латинские символы строки на нижний регистр. Изменяет сам буфер.</td></tr>
+        <tr><td>Uper</td><td><code>(String* value)</code></td><td>Меняет латинские символы строки на верхний регистр. Поле называется <code>Uper</code>, а привязанная C-функция — <code>Upper</code>.</td></tr>
+        <tr><td>Contains</td><td><code>(String value, char* substring)</code></td><td>Ищет подстроку функцией <code>strstr</code>: возвращает <code>1</code>, если найдена, и <code>0</code>, если нет.</td></tr>
+        <tr><td>Repeat_string</td><td><code>(String value, int count)</code></td><td>Поле указателя присутствует в структуре <code>String</code>, но в проверенной таблице привязок и реализации ядра метод не подключён. Не вызывай его, пока реализация не добавлена.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Использование String</span><button class="copy" data-copy="string-example">Копировать</button></div><pre id="string-example"><code>String title.Start = malloc(128) ;
+strcpy(title.value, "Eye Language") ;
+@ title.Lower(&amp;title) ;
+@ printf("%s\n", title.value) ;
+@ printf("contains = %d\n", title.Contains(title, "eye")) ;
+@ printf("as int = %d\n", title.String_to_int(title)) ;</code></pre></div>
+      <div class="callout warn">Для методов <code>Size_stirng</code>, <code>Lower</code> и <code>Uper</code> сигнатура принимает указатель на <code>String</code>, поэтому при прямом вызове C-функции используется адрес объекта: <code>&amp;title</code>. Для преобразований и <code>Contains</code> передаётся сама структура.</div>
+
+      <h3 id="api-bool">Bool — логические значения</h3>
+      <p><code>Bool</code> содержит только поле <code>_Bool value</code>. В предоставленной реализации ядра для скалярного <code>Bool</code> не объявлены указатели методов и нет автоматических привязок методов. Значение используют в условиях напрямую.</p>
+      <div class="code-wrap"><div class="code-top"><span>Использование Bool</span><button class="copy" data-copy="bool-example">Копировать</button></div><pre id="bool-example"><code>Bool ready.Start = 1 ;
+if ( ready.value ) {
+    @ printf("ready\n") ;
+} ;</code></pre></div>
+
+      <h3 id="api-file">File — работа с файлами</h3>
+      <p><code>File</code> содержит указатель <code>value</code> на содержимое и массив <code>name[100]</code> с именем/путём файла. Методы работы с файлом принимают <code>File*</code>, то есть адрес структуры.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Метод</th><th>Аргументы</th><th>Результат и назначение</th></tr></thead><tbody>
+        <tr><td>Write_file</td><td><code>(File* value)</code></td><td>Открывает <code>name</code> в режиме записи <code>"w"</code>, записывает строку из <code>value</code> и закрывает файл. Возвращает число записанных символов либо <code>-1</code>, если файл не удалось открыть.</td></tr>
+        <tr><td>Read_file</td><td><code>(File* value)</code></td><td>Открывает файл, получает размер через <code>Size_info</code>, выделяет буфер и читает данные функцией <code>fgets</code>. Возвращает <code>0</code> при успешном чтении и <code>1</code> при ошибке.</td></tr>
+        <tr><td>Size_info</td><td><code>(File* value)</code></td><td>Возвращает размер файла в байтах через <code>ftell</code>; при ошибке открытия возвращает <code>-1</code>.</td></tr>
+        <tr><td>append</td><td><code>(File* value, char text[])</code></td><td>Открывает файл в режиме добавления <code>"a"</code> и дописывает переданную C-строку в конец. Возвращаемого значения нет.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Вызов File-методов</span><button class="copy" data-copy="file-example">Копировать</button></div><pre id="file-example"><code>File logFile.Start ~ ;
+strcpy(logFile.name, "app.log") ;
+logFile.value = "EYE started\n" ;
+@ logFile.Write_file(&amp;logFile) ;
+@ printf("size = %ld\n", logFile.Size_info(&amp;logFile)) ;</code></pre></div>
+      <div class="callout warn">Режим <code>"w"</code> у <code>Write_file</code> перезаписывает существующий файл. Для дописывания в конец используй <code>append</code>.</div>
+
+      <h3 id="api-byte">Byte — байтовый буфер</h3>
+      <p><code>Byte</code> хранит <code>Norm* value</code> и количество байтов в <code>Size</code>. В ядре <code>Norm</code> определён как <code>unsigned char</code>. Все методы принимают указатель <code>Byte*</code>.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Метод</th><th>Аргументы</th><th>Результат и назначение</th></tr></thead><tbody>
+        <tr><td>Delete_byte</td><td><code>(Byte* value)</code></td><td>Освобождает буфер, устанавливает <code>value = NULL</code> и <code>Size = 0</code>.</td></tr>
+        <tr><td>Nul_byte</td><td><code>(Byte* value, int count)</code></td><td>Освобождает предыдущий буфер, выделяет <code>count</code> нулевых байтов через <code>calloc</code> и записывает количество в <code>Size</code>.</td></tr>
+        <tr><td>Redect_byte</td><td><code>(Byte* value, int count)</code></td><td>Изменяет размер буфера через <code>realloc</code>. Это имя API; привязанная функция реализации называется <code>Redirect_byte</code>.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Выделение байтового буфера</span><button class="copy" data-copy="byte-example">Копировать</button></div><pre id="byte-example"><code>Byte payload.Start ~ ;
+@ payload.Nul_byte(&amp;payload, 256) ;
+@ printf("bytes = %d\n", payload.Size) ;
+@ payload.Delete_byte(&amp;payload) ;</code></pre></div>
+
+      <h3 id="api-lists">Списки: Int_list, Float_list, Double_list, Bool_list, String_list, File_list</h3>
+      <p>Списки — структуры с указателем на массив <code>value</code> и полем <code>Size</code>. У каждого типа списка одинаковый общий шаблон методов: освободить память, выделить новый массив, изменить размер и объединить элементы в одну строку.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Тип списка</th><th>Элемент массива</th><th>Методы</th><th>Что выдаёт Join</th></tr></thead><tbody>
+        <tr><td>Int_list</td><td><code>Int</code></td><td><code>Delete_int</code>, <code>Nul_int</code>, <code>Redect_int</code>, <code>Join_int</code></td><td>Числа через запятую</td></tr>
+        <tr><td>Float_list</td><td><code>Float</code></td><td><code>Delete_float</code>, <code>Nul_float</code>, <code>Redect_float</code>, <code>Join_float</code></td><td>Числа в формате <code>%f</code> через запятую</td></tr>
+        <tr><td>Double_list</td><td><code>Double</code></td><td><code>Delete_double</code>, <code>Nul_double</code>, <code>Redect_double</code>, <code>Join_double</code></td><td>Числа в формате <code>%f</code> через запятую</td></tr>
+        <tr><td>Bool_list</td><td><code>Bool</code></td><td><code>Delete_bool</code>, <code>Nul_bool</code>, <code>Redect_bool</code>, <code>Join_bool</code></td><td><code>1</code> или <code>0</code> через запятую</td></tr>
+        <tr><td>String_list</td><td><code>String</code></td><td><code>Delete_string</code>, <code>Nul_stirng</code>, <code>Redect_string</code>, <code>Join_string</code></td><td>Тексты через запятую</td></tr>
+        <tr><td>File_list</td><td><code>File</code></td><td><code>Delete_file</code>, <code>Nul_file</code>, <code>Redect_file</code>, <code>Join_file</code></td><td>Имена файлов через запятую</td></tr>
+      </tbody></table></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Семейство метода</th><th>Аргументы</th><th>Поведение</th></tr></thead><tbody>
+        <tr><td>Delete_*</td><td><code>(List* value)</code></td><td>Освобождает массив, устанавливает указатель <code>value</code> в <code>NULL</code> и сбрасывает <code>Size</code> в <code>0</code>.</td></tr>
+        <tr><td>Nul_*</td><td><code>(List* value, int count)</code></td><td>Освобождает старый массив и выделяет новый нулевой массив на <code>count</code> элементов через <code>calloc</code>. Обновляет <code>Size</code>.</td></tr>
+        <tr><td>Redect_*</td><td><code>(List* value, int count)</code></td><td>Меняет размер существующего массива через <code>realloc</code>; при успешном изменении обновляет указатель и <code>Size</code>. Внутренние функции реализации называются <code>Redirect_*</code>.</td></tr>
+        <tr><td>Join_*</td><td><code>(List* value)</code></td><td>Создаёт и возвращает новую структуру <code>String</code> с элементами, разделёнными запятыми. Память результирующей строки выделяется динамически.</td></tr>
+      </tbody></table></div>
+      <div class="code-wrap"><div class="code-top"><span>Пример Int_list</span><button class="copy" data-copy="list-example">Копировать</button></div><pre id="list-example"><code>Int_list numbers.Start ~ ;
+@ numbers.Nul_int(&amp;numbers, 3) ;
+numbers.value[0].value = 10 ;
+numbers.value[1].value = 20 ;
+numbers.value[2].value = 30 ;
+String joined.Start ~ ;
+joined = numbers.Join_int(&amp;numbers) ;
+@ printf("%s\n", joined.value) ;
+@ free(joined.value) ;
+@ numbers.Delete_int(&amp;numbers) ;</code></pre></div>
+      <div class="callout warn">Параметр <code>count</code> — количество элементов/байтов, а не последний индекс. После <code>Nul_*</code> допустимые индексы идут от <code>0</code> до <code>Size - 1</code>. Результат <code>Join_*</code> — новая выделенная строка; после использования её следует освободить.</div>
+
+      <h3>Сокращение повторного типа: <code>^</code></h3>
+      <p>Символ <code>^</code> повторяет последний явно объявленный тип. Это сокращение записи объявления, а не оператор степени.</p>
+      <div class="code-wrap"><div class="code-top"><span>Оператор ^</span><button class="copy" data-copy="caret">Копировать</button></div><pre id="caret"><code>Int first.Start = 10 ;
+^ second.Start = 20 ;
+^ third.Start ~ ;
+
+Float pi.Start = 3.14159 ;
+^ radius.Start = 2.5 ;
+^ scale.Start ~ ;</code></pre></div>
+      <div class="callout">После смены типа укажи его явно: например, после группы <code>Int</code> напиши <code>Float</code>, и последующие <code>^</code> будут повторять уже <code>Float</code>.</div>
+
+      <h3>Маркер объявления без присваивания: <code>~</code></h3>
+      <p>Если начальное значение не требуется, вместо знака <code>=</code> у объявления <code>.Start</code> ставится <code>~</code>. Этот вариант полезен, когда поле будет заполнено позднее или память/массив будут подготовлены соответствующим методом.</p>
+      <div class="code-wrap"><div class="code-top"><span>Явная и отложенная инициализация</span><button class="copy" data-copy="tilde-example">Копировать</button></div><pre id="tilde-example"><code>Int readyValue.Start = 5 ;
+Int inputValue.Start ~ ;
+String text.Start ~ ;
+Int_list items.Start ~ ;
+
+inputValue.value = 42 ;
+text.value = malloc(128) ;
+items.Nul_int(&amp;items, 10) ;</code></pre></div>
+      <div class="callout warn">Для указательных типов (<code>String</code>, <code>File</code>, <code>Byte</code> и списков) перед использованием нужно подготовить память и указатели. Само объявление через <code>~</code> не выделяет буфер автоматически.</div>
+    </section>
+
+    <section id="imports">
+      <div class="section-head"><div class="section-num">06</div><div><h2>Импорты и функции для C</h2><p>Импортная секция располагается в начале программы и завершается маркером <code>import stop_import</code>.</p></div></div>
+      <div class="code-wrap"><div class="code-top"><span>Порядок импортов</span><button class="copy" data-copy="imports">Копировать</button></div><pre id="imports"><code>import net ;
+import my_library ;
+
+@ int twice(int x) {
+    return x * 2 ;
+} ;
+
+import stop_import ;
+
+Int value.Start = 21 ;
+@ printf("%d\n", twice(value.value)) ;
+
+end</code></pre></div>
+      <ul class="muted">
+        <li><code>import my_library;</code> подключает содержимое файла импорта в генерируемый C-код.</li>
+        <li><code>import net;</code> включает дополнительную Go-часть сетевого runtime.</li>
+        <li><code>import stop_import;</code> закрывает секцию импортов и начинает тело C-программы.</li>
+        <li>Объявления с префиксом <code>@</code>, расположенные до <code>stop_import</code>, передаются в список C-функций.</li>
+      </ul>
+      <div class="callout warn">Функции, которые должны быть доступны как C-объявления, размещай до <code>import stop_import</code>. После этого маркера записывай исполняемый код программы.</div>
+    </section>
+
+    <section id="net">
+      <div class="section-head"><div class="section-num">07</div><div><h2>Сетевой модуль <code>net</code></h2><p>Встроенный модуль позволяет описывать HTTP-сервер в EYE. Компилятор генерирует Go-обвязку, а обработка пользовательских данных может выполняться в C.</p></div></div>
+      <div class="code-wrap"><div class="code-top"><span>Каркас HTTP-сервера на EYE</span><button class="copy" data-copy="httpserver">Копировать</button></div><pre id="httpserver"><code>import net ;
+import stop_import ;
+
+String packet.Start = malloc(4096) ;
+
+for ( ; ; ) {
+    if ( fgets(packet.value, 4096, stdin) == NULL ) {
+        break ;
+    } ;
+
+    if ( strncmp(packet.value, "!value ", 7) == 0 ) {
+        printf("$text/plain; charset=utf-8!Привет! Это сервер EYE\n") ;
+    } else {
+        printf("$ok\n") ;
+    } ;
+
+    fflush(stdout) ;
+} ;
+
+net_http_server web.Start = "/" ;
+net_http_server web.Query ;
+net_http_server web.Write ;
+net_http_server web.Stop ;
+net_http_server web.Where ;
+net_http_server web.Listen = "127.0.0.1:8080" ;
+
+end</code></pre></div>
+      <h3>Методы net_http_server</h3>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Конструкция</th><th>Роль</th></tr></thead><tbody>
+        <tr><td>.Start</td><td>Начинает HTTP-обработчик и задаёт путь, например <code>"/"</code>.</td></tr>
+        <tr><td>.Address</td><td>Передаёт адрес клиента.</td></tr>
+        <tr><td>.Query</td><td>Передаёт URL и параметры запроса.</td></tr>
+        <tr><td>.Method</td><td>Передаёт HTTP-метод запроса.</td></tr>
+        <tr><td>.Header</td><td>Передаёт HTTP-заголовки.</td></tr>
+        <tr><td>.ValueUser</td><td>Передаёт Referer запроса.</td></tr>
+        <tr><td>.Form</td><td>Передаёт данные формы.</td></tr>
+        <tr><td>.Byte</td><td>Передаёт тело запроса в виде байтовой строки.</td></tr>
+        <tr><td>.Cookie</td><td>Передаёт cookies запроса.</td></tr>
+        <tr><td>.Write</td><td>Запрашивает сформированный C-частью ответ и записывает его в HTTP-ответ.</td></tr>
+        <tr><td>.Stop</td><td>Закрывает тело обработчика.</td></tr>
+        <tr><td>.Where</td><td>Закрывает вызов регистрации обработчика.</td></tr>
+        <tr><td>.Listen</td><td>Запускает HTTP-сервер на указанном адресе.</td></tr>
+      </tbody></table></div>
+      <p class="muted">Внутри одного обработчика методы получения запроса и отправки ответа записываются между открытием обработчика и его закрытием. Конкретный порядок вызовов важен.</p>
+    </section>
+
+    <section id="bridge">
+      <div class="section-head"><div class="section-num">08</div><div><h2>Как общаются языки</h2><p>Ключевая идея EYE — не заставлять все компоненты писать на одном языке. Runtime связывает процессы разными каналами обмена.</p></div></div>
+      <div class="flow">
+        <div class="flow-step"><b>HTTP / Go</b>Получает запрос и формирует сообщение</div>
+        <div class="flow-step"><b>UDS</b>Unix Domain Socket между Go и мостом</div>
+        <div class="flow-step"><b>Мост ядра</b>Пересылает данные между каналами</div>
+        <div class="flow-step"><b>stdin / stdout</b>Потоки ввода и вывода процесса C</div>
+        <div class="flow-step"><b>C / EYE</b>Выполняет пользовательскую логику</div>
+      </div>
+      <div class="two">
+        <article class="card"><h3>Важно: C не подключается к UDS</h3><p>C получает сообщения через стандартный ввод (`stdin`) и отправляет ответы через стандартный вывод (`stdout`). UDS используется на стороне Go и моста ядра.</p></article>
+        <article class="card"><h3>Маркер ответа <code>$</code></h3><p>Мост распознаёт строки C, начинающиеся с <code>$</code>, убирает префикс и передаёт содержимое обратно в Go через UDS.</p></article>
+      </div>
+      <h3>Протокол HTTP-ответа</h3>
+      <p>Для обработки запроса C читает строку из <code>stdin</code>. На обычный запрос можно вернуть подтверждение <code>$ok</code>. Для команды ответа <code>!value</code> C отправляет тип содержимого и тело через разделитель <code>!</code>.</p>
+      <div class="code-wrap"><div class="code-top"><span>Формат ответа со стороны C</span><button class="copy" data-copy="response">Копировать</button></div><pre id="response"><code>if ( strncmp(packet.value, "!value ", 7) == 0 ) {
+    printf("$text/plain; charset=utf-8!Ответ из EYE\n") ;
+} else {
+    printf("$ok\n") ;
+} ;
+fflush(stdout) ;</code></pre></div>
+      <div class="callout">`Write` на Go-стороне отправляет запрос `!value`, получает строку формата `Content-Type!body`, устанавливает HTTP-заголовок и записывает тело клиенту.</div>
+      <h3>Подключение других языков</h3>
+      <p>По архитектуре проекта к компилятору можно подключать дополнительные языки. Для нового языка требуется соответствующий генератор/адаптер запуска и согласованный протокол сообщений. UDS — один из способов межпроцессного взаимодействия. Само наличие UDS не означает, что произвольный язык подключается автоматически без адаптера.</p>
+    </section>
+
+    <section id="resilience">
+      <div class="section-head"><div class="section-num">09</div><div><h2>Отказоустойчивость и перезапуск частей</h2><p>Автор EYE описывает модель восстановления, близкую по идее к подходу Elixir: при сбое можно перезапускать отдельные части приложения.</p></div></div>
+      <div class="grid">
+        <article class="card"><h3>Изоляция частей</h3><p>Приложение можно организовывать из отдельных компонентов, чтобы сбой одного компонента не обязательно останавливал всё приложение.</p></article>
+        <article class="card"><h3>Перезапуск</h3><p>Runtime ориентирован на восстановление упавших частей путём повторного запуска, а не только на единый перезапуск всего процесса.</p></article>
+        <article class="card"><h3>Внешние процессы</h3><p>Архитектура с несколькими языками и каналами IPC позволяет разделять обязанности между отдельными процессами.</p></article>
+      </div>
+      <div class="callout warn">Это описание отражает заявленную концепцию EYE. В предоставленном исходнике не найден полный пользовательский синтаксис дерева супервизоров, стратегий перезапуска и политик интенсивности рестартов. Поэтому здесь не приводится вымышленный пример таких директив.</div>
+      <p>Сходство с Elixir — концептуальное: идея восстановления отдельных частей. Это не означает совместимость с OTP или идентичную реализацию супервизоров.</p>
+    </section>
+
+    <section id="build">
+      <div class="section-head"><div class="section-num">10</div><div><h2>Компиляция и запуск</h2><p>Компилятор читает файл <code>.eye</code>, генерирует C-код и при включённом <code>import net</code> — Go-компонент.</p></div></div>
+      <div class="flow">
+        <div class="flow-step"><b>1 · EYE</b>Исходный файл `.eye`</div>
+        <div class="flow-step"><b>2 · Parser</b>Токенизация и разбор</div>
+        <div class="flow-step"><b>3 · C</b>Генерация и сборка C</div>
+        <div class="flow-step"><b>4 · Go</b>Генерация и сборка при `net`</div>
+        <div class="flow-step"><b>5 · Runtime</b>Запуск процессов и мостов</div>
+      </div>
+      <h3>Запросы компилятора</h3>
+      <ol class="muted">
+        <li>Имя выходного C-файла.</li>
+        <li>Дополнительная команда или команды, если они нужны.</li>
+        <li>Время работы программы.</li>
+        <li>Имя исходного файла `.eye`.</li>
+        <li>Имя Go-файла, если подключён `import net`.</li>
+      </ol>
+      <p>В текущей реализации для сборки C используется компилятор GCC; для сетевого компонента — Go toolchain. При использовании математических функций ядро связывает математическую библиотеку.</p>
+      <div class="callout warn">Режимы запуска и поведение мостов зависят от версии ядра. Используй согласованную версию компилятора и runtime; не смешивай файлы ядра из разных итераций разработки.</div>
+    </section>
+
+    <section id="limits">
+      <div class="section-head"><div class="section-num">11</div><div><h2>Текущие оговорки</h2><p>Чтобы документация оставалась полезной, важно отделять реализованные элементы от направлений развития.</p></div></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Область</th><th>Статус по доступному материалу</th></tr></thead><tbody>
+        <tr><td>Переменные `.Start`</td><td>Есть в парсере и генераторе C; методы типа связываются при создании поддерживаемых структур.</td></tr>
+        <tr><td>Сокращение `^`</td><td>Распознаётся как повтор последнего использованного типа.</td></tr>
+        <tr><td>Вызовы `@`</td><td>Используются для вызова C-функций и объявления пользовательских C-функций до `stop_import`.</td></tr>
+        <tr><td>Модуль `net`</td><td>Подключает Go-часть, HTTP-функции и UDS-мост.</td></tr>
+        <tr><td>Другие языки</td><td>Архитектурно подключаемы через адаптеры; набор готовых адаптеров зависит от версии проекта.</td></tr>
+        <tr><td>Перезапуск частей</td><td>Заявленная возможность runtime; полный пользовательский синтаксис политик восстановления здесь не специфицирован.</td></tr>
+      </tbody></table></div>
+      <div class="callout">Практический совет: для нового примера сначала проверь минимальный EYE-код на своей версии ядра, затем добавляй взаимодействие с внешними процессами. Это помогает быстро отличить ошибку языка от ошибки моста или генератора.</div>
+    </section>
+
+    <footer class="footer">EYE · документация на русском языке<br>Подготовлено на основе C-структур и таблицы привязок методов в предоставленном ядре, а также уточнений автора EYE о синтаксисе <code>^</code> и <code>~</code>. Названия методов намеренно сохранены в написании ядра, включая исторические варианты вроде <code>Size_stirng</code>, <code>Uper</code> и <code>Redect</code>.</footer>
+  </div>
+</main>
+</div>
+<script>
+(function(){
+  const search=document.getElementById('navSearch');
+  const links=[...document.querySelectorAll('#nav a')];
+  search.addEventListener('input',()=>{const q=search.value.toLowerCase();links.forEach(a=>{a.style.display=a.textContent.toLowerCase().includes(q)?'flex':'none';});});
+  document.querySelectorAll('.copy').forEach(btn=>btn.addEventListener('click',async()=>{const target=document.getElementById(btn.dataset.copy);if(!target)return;const text=target.innerText;try{await navigator.clipboard.writeText(text);btn.textContent='Скопировано';setTimeout(()=>btn.textContent='Копировать',1200);}catch(e){btn.textContent='Не удалось';setTimeout(()=>btn.textContent='Копировать',1200);}}));
+  const sections=[...document.querySelectorAll('main section')];
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.hash==='#'+entry.target.id));}}),{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(s=>observer.observe(s));
+})();
+</script>
+</body>
+</html>
