@@ -4,7 +4,7 @@
 ![Status](https://img.shields.io/badge/status-early_alpha-orange)
 ![License](https://img.shields.io/badge/license-Apache_2.0-blue)
 ![Backend](https://img.shields.io/badge/backend-C_&_Go-green)
-
+![Version](https://img.shields.io/badge/version-0.1.0-blue)
 **Control(version 0.1)** is a hybrid compiler and runtime environment for the **EYE** programming language. It is designed to unify the worlds of low-level hardware control and high-level networking into a single, cohesive ecosystem. 
 
 Source files written in EYE use the **`.eye`** extension. Currently, the Control compiler is distributed as a **single-file monolithic Go script** for easy setup and rapid testing.
