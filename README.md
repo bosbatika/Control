@@ -1,6 +1,6 @@
 ## 🏗️ Architecture
 
-EYE is built on a modular, multi-language architecture designed to leverage the strengths of both C and Go. It uses a dual-backend approach to separate high-performance hardware control from high-level networking.
+Control is built on a modular, multi-language architecture designed to leverage the strengths of both C and Go. It uses a dual-backend approach to separate high-performance hardware control from high-level networking.
 
 ### 1. Compilation Pipeline
 The compiler reads `.eye` source files and converts them into an Abstract Syntax Tree (AST). Then, it routes the AST to specific code generators:
