@@ -1,4 +1,4 @@
-# Control Compiler (for EYE Language)
+# Control
 
 [![Telegram](https://img.shields.io/badge/Telegram-Join_Chat-blue?logo=telegram&style=for-the-badge)](https://t.me/control_eye)
 ![Status](https://img.shields.io/badge/status-early_alpha-orange)
